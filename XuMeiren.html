@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专属浪漫</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0, #ffd8cb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Microsoft YaHei', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        #show {
+            font-size: 1.8rem;
+            line-height: 1.8;
+            color: #5a5a5a;
+            min-height: 200px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 2rem;
+            background-color: #ff6b6b;
+            margin-left: 4px;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .footer {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #888;
+        }
+        
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp linear forwards;
+            z-index: 1;
+        }
+        
+        @keyframes floatUp {
+            to {
+                transform: translateY(-100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❤️❤️❤️❤️❤️给你的专属浪漫❤️❤️❤️❤️❤️</h1>
+        <div id="show"></div>
+        <div class="footer">每一字都是我的心意</div>
+    </div>
+
+    <script>
+        var str = "海霞，我爱你，不仅仅因为你的样子，更因为和你在一起时，我的样子。";
+        var len = str.length;
+        var i = 1;
+        
+        function showword(){
+            var displayText = str.substr(0, i++);
+            document.getElementById("show").innerHTML = displayText + '<span class="cursor"></span>';
+            
+            if(i > len){
+                clearInterval(done);
+                setTimeout(function() {
+                    document.getElementById("show").innerHTML += 
+                        '<br><br><div style="text-align:center; color:#ff6b6b; font-size:1.2em; margin-top:20px;">' + 
+                        '今晚一起去吃个晚饭，可以吗？</div>';
+                }, 1000);
+            }
+        }
+        
+        var done = setInterval(showword, 80);
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const colors = ['#ff0000', '#ff69b4', '#ff1493', '#ff00ff', '#ff6347', '#ff4500'];
+            
+            function createHeart(startX, startY) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤';
+                const size = Math.random() * 30 + 10;
+                heart.style.fontSize = `${size}px`;
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                if (startX === undefined) startX = Math.random() * window.innerWidth;
+                if (startY === undefined) startY = window.innerHeight;
+                heart.style.left = `${startX}px`;
+                heart.style.top = `${startY}px`;
+                
+                const duration = Math.random() * 5 + 3;
+                heart.style.animationDuration = `${duration}s`;
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, duration * 1000);
+            }
+            
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, Math.random() * 2000);
+            }
+            
+            setInterval(createHeart, 200);
+            
+            document.addEventListener('click', function(e) {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        createHeart(e.clientX, e.clientY);
+                    }, i * 100);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
