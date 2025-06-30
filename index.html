@@ -9,19 +9,20 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
         }
         
         body {
             background: linear-gradient(135deg, #ffafbd, #ffc3a0, #ffd8cb);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            font-family: 'Microsoft YaHei', sans-serif;
             height: 100vh;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            color: #5a5a5a;
         }
         
         @keyframes gradientBG {
@@ -40,6 +41,7 @@
             text-align: center;
             position: relative;
             z-index: 10;
+            transition: transform 0.3s ease;
         }
         
         h1 {
@@ -52,7 +54,6 @@
         #show {
             font-size: 1.8rem;
             line-height: 1.8;
-            color: #5a5a5a;
             min-height: 200px;
             padding: 20px;
             border-radius: 15px;
@@ -95,19 +96,187 @@
                 transform: translateY(-100vh);
             }
         }
+        
+        .question-box {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .question-box p {
+            font-size: 1.6rem;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-agree {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+        }
+        
+        .btn-reject {
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .reject-message {
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .final-message {
+            background: rgba(79, 172, 254, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(79, 172, 254, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(79, 172, 254, 0); }
+        }
+        
+        .final-message h2 {
+            color: #4facfe;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .final-message p {
+            font-size: 1.4rem;
+            line-height: 1.6;
+        }
+        
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            font-size: 2rem;
+            bottom: -50px;
+            animation: float linear forwards;
+            opacity: 0.8;
+        }
+        
+        @keyframes float {
+            to {
+                transform: translateY(-110vh) rotate(360deg);
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>❤️❤️❤️❤️❤️给你的专属浪漫❤️❤️❤️❤️❤️</h1>
+        <h1>❤️❤️❤️❤️❤️ 给*******的专属浪漫 ❤️❤️❤️❤️❤️</h1>
         <div id="show"></div>
         <div class="footer">每一字都是我的心意</div>
+        
+        <!-- 问题区域 -->
+        <div id="question" class="hidden">
+            <div class="question-box">
+                <p>今晚我选择了一家美食餐厅,我们边吃边交流一下,可以吗？</p>
+                <div class="btn-container">
+                    <button id="agree-btn" class="btn btn-agree">❤️ 我同意 ❤️</button>
+                    <button id="reject-btn" class="btn btn-reject">😢 拒绝</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 拒绝消息区域 -->
+        <div id="reject-messages" class="hidden">
+            <div class="reject-message">
+                <p id="rejection-text"></p>
+            </div>
+        </div>
+        
+        <!-- 最终消息区域 -->
+        <div id="final-message" class="hidden">
+            <div class="final-message">
+                <h2>❤️ 谢谢你 ❤️</h2>
+                <p>今晚7点，我在老地方等你</p>
+                <p>我会带着鲜花和满满的期待</p>
+                <p>不见不散！</p>
+            </div>
+        </div>
     </div>
+    
+    <div class="floating-hearts"></div>
 
     <script>
         var str = "海霞，我爱你，不仅仅因为你的样子，更因为和你在一起时，我的样子。";
         var len = str.length;
         var i = 1;
+        
+        var rejectionMessages = [
+            "我的心都碎了，再考虑考虑好吗？",
+            "没有你，晚餐都不香了，答应我吧？",
+            "给我一个机会，让我证明我的真心好吗？",
+            "我会一直等你，直到你同意为止",
+            "没有你的晚餐，就像没有星星的夜空",
+            "我知道我有很多不足，但我会为你改变",
+            "你的微笑是我最大的动力，答应我吧",
+            "我会一直在这里等你改变主意",
+            "没有你，今晚的月光都会暗淡无光",
+            "你是我生命中最美的风景，不要拒绝我"
+        ];
         
         function showword(){
             var displayText = str.substr(0, i++);
@@ -116,16 +285,14 @@
             if(i > len){
                 clearInterval(done);
                 setTimeout(function() {
-                    document.getElementById("show").innerHTML += 
-                        '<br><br><div style="text-align:center; color:#ff6b6b; font-size:1.2em; margin-top:20px;">' + 
-                        '今晚一起去吃个晚饭，可以吗？</div>';
+                    document.getElementById("question").classList.remove("hidden");
                 }, 1000);
             }
         }
         
         var done = setInterval(showword, 80);
         
-        document.addEventListener('DOMContentLoaded', function() {
+        function createHearts() {
             const colors = ['#ff0000', '#ff69b4', '#ff1493', '#ff00ff', '#ff6347', '#ff4500'];
             
             function createHeart(startX, startY) {
@@ -166,6 +333,75 @@
                     }, i * 100);
                 }
             });
+        }
+        
+        function createFloatingHearts() {
+            const container = document.querySelector('.floating-hearts');
+            const colors = ['#ff6b6b', '#ff8e8e', '#ffafaf', '#ff9a9e', '#ffccd5'];
+            
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = '❤';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.fontSize = `${Math.random() * 20 + 15}px`;
+                heart.style.animationDuration = `${Math.random() * 10 + 15}s`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(heart);
+            }
+        }
+        
+        document.getElementById('agree-btn').addEventListener('click', function() {
+            document.getElementById("question").classList.add("hidden");
+            document.getElementById("reject-messages").classList.add("hidden");
+            document.getElementById("final-message").classList.remove("hidden");
+            
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createHeart(
+                        container.offsetLeft + Math.random() * container.offsetWidth,
+                        container.offsetTop + Math.random() * container.offsetHeight
+                    );
+                }, i * 100);
+            }
+        });
+        
+        document.getElementById('reject-btn').addEventListener('click', function() {
+            const randomIndex = Math.floor(Math.random() * rejectionMessages.length);
+            document.getElementById('rejection-text').textContent = rejectionMessages[randomIndex];
+            
+            document.getElementById("reject-messages").classList.remove("hidden");
+            
+            const container = document.querySelector('.container');
+            container.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                container.style.animation = '';
+            }, 500);
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.innerHTML = '💔';
+                    heart.style.fontSize = '25px';
+                    heart.style.color = '#4facfe';
+                    heart.style.left = `${Math.random() * window.innerWidth}px`;
+                    heart.style.top = `${window.innerHeight}px`;
+                    heart.style.animationDuration = '5s';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 5000);
+                }, i * 200);
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            createHearts();
+            createFloatingHearts();
         });
     </script>
 </body>
