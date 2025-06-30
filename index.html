@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>范浩给许海霞的专属浪漫</title>
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
     <style>
@@ -10,6 +10,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         
         body {
@@ -24,6 +26,7 @@
             position: relative;
             color: #5a5a5a;
             font-family: 'Ma Shan Zheng', 'Microsoft YaHei', cursive, sans-serif;
+            overscroll-behavior: none;
         }
         
         @keyframes gradientBG {
@@ -35,40 +38,58 @@
         .container {
             background-color: rgba(255, 255, 255, 0.85);
             border-radius: 20px;
-            padding: 40px;
+            padding: 20px;
             max-width: 800px;
-            width: 90%;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            width: 95%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             text-align: center;
             position: relative;
             z-index: 10;
-            transition: transform 0.3s ease;
             overflow: hidden;
+            max-height: 95vh;
+            display: flex;
+            flex-direction: column;
         }
         
         h1 {
             color: #ff6b6b;
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            line-height: 1.3;
+            padding: 0 10px;
         }
         
         #show {
-            font-size: 1.8rem;
-            line-height: 1.8;
-            min-height: 200px;
-            padding: 20px;
+            font-size: clamp(1.4rem, 4vw, 1.8rem);
+            line-height: 1.6;
+            min-height: 40vh;
+            max-height: 40vh;
+            padding: 15px;
             border-radius: 15px;
             background-color: rgba(255, 255, 255, 0.7);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 20px 0;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+            margin: 10px 0;
             text-align: left;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #ff6b6b rgba(255, 255, 255, 0.3);
+        }
+        
+        #show::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #show::-webkit-scrollbar-thumb {
+            background-color: #ff6b6b;
+            border-radius: 3px;
         }
         
         .cursor {
             display: inline-block;
-            width: 8px;
-            height: 2rem;
+            width: 6px;
+            height: 1.8rem;
             background-color: #ff6b6b;
             margin-left: 4px;
             animation: blink 0.8s infinite;
@@ -81,8 +102,8 @@
         }
         
         .footer {
-            margin-top: 20px;
-            font-size: 1.2rem;
+            margin-top: 10px;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
             color: #888;
         }
         
@@ -100,37 +121,65 @@
         }
         
         .question-box {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
+            padding: 25px 20px;
+            margin: 15px 0;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             text-align: center;
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.8s ease;
+            position: relative;
+            z-index: 20;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            display: none; /* 初始隐藏 */
+        }
+        
+        .question-box.active {
+            display: block; /* 激活时显示 */
         }
         
         .question-box p {
-            font-size: 1.6rem;
+            font-size: clamp(1.4rem, 4vw, 1.6rem);
             color: #ff6b6b;
             margin-bottom: 20px;
             font-weight: bold;
+            line-height: 1.4;
+        }
+        
+        .question-box .invitation-title {
+            font-size: clamp(1.6rem, 5vw, 2rem);
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            animation: pulseText 2s infinite;
+        }
+        
+        @keyframes pulseText {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         
         .btn-container {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
         }
         
         .btn {
-            padding: 12px 30px;
-            font-size: 1.2rem;
+            padding: 12px 25px;
+            font-size: clamp(1.1rem, 3.5vw, 1.2rem);
             border-radius: 50px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            min-width: 140px;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
         
         .btn-agree {
@@ -143,57 +192,59 @@
             color: white;
         }
         
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
-        
         .btn:active {
-            transform: translateY(1px);
+            transform: translateY(2px) scale(0.98);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
         .reject-message {
             background: rgba(255, 107, 107, 0.1);
             border-radius: 10px;
             padding: 15px;
-            margin-top: 20px;
-            animation: shake 0.5s;
+            margin-top: 15px;
+            animation: fadeIn 0.5s ease;
+            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+            display: none;
         }
         
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
+        .reject-message.active {
+            display: block;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .final-message {
             background: rgba(79, 172, 254, 0.1);
             border-radius: 15px;
-            padding: 20px;
-            margin-top: 30px;
-            animation: pulse 2s infinite;
+            padding: 25px 20px;
+            margin: 15px 0;
+            animation: fadeIn 1s ease;
+            position: relative;
+            z-index: 20;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            display: none;
         }
         
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(79, 172, 254, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(79, 172, 254, 0); }
+        .final-message.active {
+            display: block;
         }
         
         .final-message h2 {
             color: #4facfe;
-            font-size: 2rem;
+            font-size: clamp(1.6rem, 4.5vw, 2rem);
             margin-bottom: 15px;
+            text-align: center;
         }
         
         .final-message p {
-            font-size: 1.4rem;
-            line-height: 1.6;
+            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+            line-height: 1.5;
+            margin: 10px 0;
+            text-align: center;
         }
         
         .floating-hearts {
@@ -208,10 +259,12 @@
         
         .floating-heart {
             position: absolute;
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             bottom: -50px;
             animation: float linear forwards;
             opacity: 0.8;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
         
         @keyframes float {
@@ -222,9 +275,10 @@
         
         .hidden {
             display: none;
+            opacity: 0;
+            pointer-events: none;
         }
         
-        /* 开场动画 */
         .intro-animation {
             position: fixed;
             top: 0;
@@ -238,36 +292,41 @@
             justify-content: center;
             align-items: center;
             transition: opacity 1s ease;
+            overflow: hidden;
         }
         
         .intro-title {
-            font-size: 4rem;
+            font-size: clamp(2.5rem, 8vw, 4rem);
             color: #ff6b6b;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-            margin-bottom: 2rem;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
             animation: heartbeat 1.2s infinite;
             font-family: 'ZCOOL QingKe HuangYou', sans-serif;
+            text-align: center;
+            padding: 0 20px;
         }
         
         @keyframes heartbeat {
             0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
         
         .couple-animation {
             position: relative;
             width: 100%;
-            height: 200px;
-            margin-top: 2rem;
+            height: 180px;
+            margin-top: 1.5rem;
         }
         
         .person {
             position: absolute;
-            bottom: 50px;
-            font-size: 4rem;
+            bottom: 40px;
+            font-size: clamp(3rem, 8vw, 4rem);
             opacity: 0;
             animation: fadeInPerson 1s forwards;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
         
         .person.boy {
@@ -290,7 +349,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             color: #ff6b6b;
             opacity: 0;
             animation: heartsAppear 1s forwards;
@@ -312,14 +371,14 @@
             100% { 
                 left: 45%; 
                 right: 45%; 
-                transform: scale(1.2);
+                transform: scale(1.1);
             }
         }
         
         .start-button {
-            margin-top: 3rem;
-            padding: 15px 40px;
-            font-size: 1.5rem;
+            margin-top: 2rem;
+            padding: clamp(12px, 4vw, 15px) clamp(30px, 8vw, 40px);
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
             background: linear-gradient(to right, #ff6b6b, #ff8e8e);
             color: white;
             border: none;
@@ -328,13 +387,16 @@
             opacity: 0;
             animation: fadeInButton 1s forwards;
             animation-delay: 4s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            min-width: 180px;
         }
         
-        .start-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        .start-button:active {
+            transform: translateY(3px) scale(0.98);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         @keyframes fadeInButton {
@@ -343,8 +405,8 @@
         }
         
         .couple-image {
-            width: 100px;
-            height: 100px;
+            width: clamp(80px, 20vw, 100px);
+            height: clamp(80px, 20vw, 100px);
             background-color: #ff6b6b;
             border-radius: 50%;
             position: absolute;
@@ -354,7 +416,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             color: white;
             opacity: 0;
             animation: coupleAppear 1.5s forwards;
@@ -364,79 +426,62 @@
         
         @keyframes coupleAppear {
             0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
-            70% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            70% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
             100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
         
-        /* 响应式设计 */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
+            .container {
+                padding: 15px;
             }
             
             #show {
-                font-size: 1.4rem;
-                padding: 15px;
-                min-height: 150px;
+                min-height: 35vh;
+                max-height: 35vh;
+                padding: 12px;
             }
             
-            .intro-title {
-                font-size: 2.5rem;
-                text-align: center;
-            }
-            
-            .person {
-                font-size: 3rem;
-            }
-            
-            .btn-container {
-                flex-direction: column;
-                gap: 10px;
+            .question-box {
+                padding: 20px 15px;
             }
             
             .btn {
                 padding: 10px 20px;
+                min-width: 120px;
                 font-size: 1.1rem;
-                width: 100%;
-            }
-            
-            .question-box p {
-                font-size: 1.4rem;
-            }
-            
-            .container {
-                padding: 20px;
             }
         }
         
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
+                margin-bottom: 10px;
             }
             
-            .intro-title {
-                font-size: 2rem;
+            #show {
+                font-size: 1.3rem;
+                min-height: 30vh;
+                max-height: 30vh;
             }
             
-            .person {
-                font-size: 2.5rem;
+            .question-box p {
+                font-size: 1.3rem;
             }
             
-            .final-message h2 {
-                font-size: 1.8rem;
+            .btn-container {
+                gap: 10px;
             }
             
-            .final-message p {
-                font-size: 1.2rem;
+            .btn {
+                min-width: 110px;
+                padding: 10px 15px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 开场动画 -->
     <div class="intro-animation" id="introAnimation">
-        <div class="intro-title">❤️ 范浩 ❤️</div>
-        <div class="intro-title">许海霞</div>
+        <div class="intro-title">范浩 ❤️ 许海霞</div>
         
         <div class="couple-animation">
             <div class="person boy">👨</div>
@@ -445,72 +490,56 @@
             <div class="couple-image">💑</div>
         </div>
         
-        <button class="start-button" id="startButton">开启浪漫之旅</button>
+        <button class="start-button" id="startButton">开启专属浪漫</button>
     </div>
     
-    <!-- 主内容 -->
     <div class="container" id="mainContainer">
         <h1>❤️❤️❤️❤️❤️ 给许海霞女士的专属浪漫 ❤️❤️❤️❤️❤️</h1>
         <div id="show"></div>
         <div class="footer">每一字都是我的心意</div>
         
-        <!-- 问题区域 -->
-        <div id="question" class="hidden">
-            <div class="question-box">
-                <p>今晚6点半，我在台东步行街等你</p>
-                <p>我们可以共进晚餐，聊聊未来吗？</p>
-                <div class="btn-container">
-                    <button id="agree-btn" class="btn btn-agree">❤️ 我同意 ❤️</button>
-                    <button id="reject-btn" class="btn btn-reject">😢 拒绝 😢</button>
-                </div>
+        <div id="question" class="question-box">
+            <div class="invitation-title">❤️ 晚餐邀请 ❤️</div>
+            <p>今晚6点30分，我在台东步行街等你</p>
+            <p>我们可以共进晚餐，认真沟通、聊聊未来吗？</p>
+            <div class="btn-container">
+                <button id="agree-btn" class="btn btn-agree">❤️ 我同意 ❤️</button>
+                <button id="reject-btn" class="btn btn-reject">😢 拒绝 😢</button>
             </div>
         </div>
         
-        <!-- 拒绝消息区域 -->
-        <div id="reject-messages" class="hidden">
-            <div class="reject-message">
-                <p id="rejection-text"></p>
-            </div>
+        <div id="reject-messages" class="reject-message">
+            <p id="rejection-text"></p>
         </div>
         
-        <!-- 最终消息区域 -->
-        <div id="final-message" class="hidden">
-            <div class="final-message">
-                <h2>❤️ 谢谢你 ❤️</h2>
-                <p>今晚6点半，我在台东步行街入口等你</p>
-                <p>我会穿着你最喜欢的那件蓝色衬衫</p>
-                <p>不见不散！</p>
-            </div>
+        <div id="final-message" class="final-message">
+            <h2>❤️ 谢谢你 ❤️</h2>
+            <p>今晚6点30分，我在台东步行街入口等你</p>
+            <p>我会穿着你说我很有品味的那件衣服</p>
+            <p>不见不散！</p>
         </div>
     </div>
     
     <div class="floating-hearts"></div>
 
     <script>
-        // 开场动画
         document.addEventListener('DOMContentLoaded', function() {
-            // 显示开场动画
             const introAnimation = document.getElementById('introAnimation');
             const mainContainer = document.getElementById('mainContainer');
             const startButton = document.getElementById('startButton');
             
-            // 初始隐藏主内容
             mainContainer.style.display = 'none';
             
-            // 添加动画类
             document.querySelector('.boy').classList.add('moving-together');
             document.querySelector('.girl').classList.add('moving-together');
             
-            // 开始按钮事件
             startButton.addEventListener('click', function() {
-                // 淡出开场动画
                 introAnimation.style.opacity = '0';
                 
                 setTimeout(function() {
                     introAnimation.style.display = 'none';
-                    mainContainer.style.display = 'block';
+                    mainContainer.style.display = 'flex';
                     
-                    // 开始文字显示
                     startTextAnimation();
                     createHearts();
                     createFloatingHearts();
@@ -518,9 +547,8 @@
             });
         });
         
-        // 文字显示函数
         function startTextAnimation() {
-            var str = "亲爱的海霞：<br><br>这两天我一直在反思我们的关系。你说我很好，但你没有感受到我对你特别的爱。这让我想起了你发烧那天，我去楼下给你买雪糕，你说你怕自己会离不开我。这说明我可以在细节上做得很好，但为什么你感受不到我的爱呢？<br><br>我明白了，你说我对朋友都很好，但唯独没有给你专属的浪漫和特别的细节。这确实是我的疏忽！所以我决定用我擅长的领域——编程，来创造一次只属于你的浪漫时刻。<br><br>我知道我犯了严重的错误——关于信任的问题，让你感到被愚弄和欺骗。还有我去你家找你，可能给你带来了无形的压力。我真的很懊悔，但我无法停止关心你，无法停止关注你的动态。<br><br>你说'枯尽'，但在我心里，只要根还在，就一定会发出新芽。我对你的感情就是这样，永远不会枯竭。我会记住这次教训，努力成为你值得依靠的那个人，给你我所有的专属关爱！";
+            var str = "人美心善的许海霞：<br><br>这两天我一直在反思我们的关系。你说我很好，但你没有感受到我对你特别的爱。这让我想起了你发烧那天，我去楼下给你买雪糕，你说你怕自己会离不开我。这说明我可以在细节上做得很好，但为什么你感受不到我的爱呢？我明白了，你说我对朋友都很好，情商也挺高，但唯独没有给你专属的浪漫和特别的细节，细节也很重要。这确实是我的疏忽！所以我决定用我擅长的领域——编程，来创造一次只属于你的浪漫时刻。<br><br>我清楚的意识到我犯了严重的错误——关于信任的问题，让你感到被愚弄和欺骗。还有我那天半夜去你家找你，可能给你带来了无形的压力以及困扰。我真的很懊悔，但我无法停止关心你，无法停止关注你的动态。<br><br>那天看到你朋友圈说'枯尽'，但在我心里，只要根还在，就一定会发出新芽。我对你的感情就是这样，永远不会枯竭。对待你的每一处细节都会与别人不同，我会记住这次教训，铭记在心，时时都在鞭策自己，努力成为你值得依靠的那个人，给你我所有的专属关爱、耐心以及我所有的温柔！<br>在期待一下，3,2,1</br>";
             var len = str.length;
             var i = 1;
             
@@ -528,30 +556,32 @@
                 var displayText = str.substr(0, i++);
                 document.getElementById("show").innerHTML = displayText + '<span class="cursor"></span>';
                 
+                const showElement = document.getElementById("show");
+                showElement.scrollTop = showElement.scrollHeight;
+                
                 if(i > len){
                     clearInterval(done);
-                    
-                    // 等待2秒后清空文字并显示约会邀请
                     setTimeout(function() {
                         document.getElementById("show").innerHTML = "";
-                        document.getElementById("question").classList.remove("hidden");
-                    }, 2000);
+                        document.getElementById("show").style.display = "none";
+                        document.querySelector("h1").style.display = "none";
+                        document.querySelector(".footer").style.display = "none";
+                        document.getElementById("question").classList.add("active");
+                    }, 3000);
                 }
             }
             
-            var done = setInterval(showword, 50);
+            var done = setInterval(showword, 150);
         }
         
         var rejectionMessages = [
-            "我的心都碎了，再考虑考虑好吗？",
-            "给我一个机会，让我证明我的真心好吗？",
-            "我会一直等你，直到你同意为止",
-            "没有你的晚餐，就像没有星星的夜空",
-            "我知道我有很多不足，但我会为你改变",
-            "你的微笑是我最大的动力，答应我吧",
+            "我的心碎了，再考虑考虑好吗？求求嘛~~",
+            "给我一个机会，让我的特殊浪漫重新体现好吗？求求啦~~",
+            "我会一直等你，直到你同意为止哦~~~",
+            "我知道我有很多不足，但我会为你改变！",
+            "你的微笑是我最大的动力，嘻嘻❤️，答应我吧❤️",
             "我会一直在这里等你改变主意",
-            "没有你，今晚的月光都会暗淡无光",
-            "你是我生命中最美的风景，不要拒绝我"
+            "你是我生命中最美的风景，不要拒绝我啦~~~"
         ];
         
         function createHearts() {
@@ -615,9 +645,9 @@
         }
         
         document.getElementById('agree-btn').addEventListener('click', function() {
-            document.getElementById("question").classList.add("hidden");
-            document.getElementById("reject-messages").classList.add("hidden");
-            document.getElementById("final-message").classList.remove("hidden");
+            document.getElementById("question").classList.remove("active");
+            document.getElementById("reject-messages").classList.remove("active");
+            document.getElementById("final-message").classList.add("active");
             
             const container = document.querySelector('.container');
             for (let i = 0; i < 50; i++) {
@@ -634,13 +664,7 @@
             const randomIndex = Math.floor(Math.random() * rejectionMessages.length);
             document.getElementById('rejection-text').textContent = rejectionMessages[randomIndex];
             
-            document.getElementById("reject-messages").classList.remove("hidden");
-            
-            const container = document.querySelector('.container');
-            container.style.animation = 'shake 0.5s';
-            setTimeout(() => {
-                container.style.animation = '';
-            }, 500);
+            document.getElementById("reject-messages").classList.add("active");
             
             for (let i = 0; i < 5; i++) {
                 setTimeout(() => {
